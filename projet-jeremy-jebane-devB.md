@@ -31,3 +31,7 @@ npm start
 - [V2] : regler les problemes de poid des cartes (V<D<R<A) amelioration du visuel et ajout de la vision de la prochaine carte a jouer
 
 - [V3] : finalisation du jeu fix des bugs  et ajout des regles du jeu
+
+[jeu de la bataille fini]
+
+-[first-commit-Poker] : initialisation du projet en clonant le jeux bataille (creation d'une nvl page sur le siteS)

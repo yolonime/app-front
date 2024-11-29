@@ -8,6 +8,9 @@ const Main = () => {
           <Link to="/bataille">Bataille</Link>
         </li>
         <li>
+          <Link to="/Poker">Poker</Link>
+        </li>
+        <li>
           <Link to="/cat">Cat</Link>
         </li>
         <li>

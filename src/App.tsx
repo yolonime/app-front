@@ -17,6 +17,7 @@ import Focus from "./Focus";
 import Storage from "./Storage";
 import Todo from "./Todo";
 import Bataille from "./components/Bataille";
+import Poker from "./components/Poker";
 import InfiniteLoader from "./InfiniteLoader";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Counter2 from "./components/Counter/CounterZustand";
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "roulette",
         element: <Roulette />,
+      },
+      {
+        path: "poker",
+        element: <Poker />,
       },
       {
         path: "note",
