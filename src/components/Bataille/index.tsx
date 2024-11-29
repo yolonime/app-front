@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 // regle du jeu:
 // chaque joueur a une main de 26 cartes
 // chaque joueur la 1ere carte de sa main lorsqu'il appuis sur le bouton bataille
-// le joueur qui a la carte la plus forte gagne
+// le joueur qui a la carte la plus forte gagne et remporte les 2 cartes qui vont dans sa main
 // si les cartes sont egales on fait une bataille : chaque joueur met une carte face cachee et une carte face visible
-// le joueur qui a la carte la plus forte gagne
+// le joueur qui a la carte la plus forte gagne et remporte toutes les cartes
 // si les cartes sont egales on refait une bataille
 // si un joueur n'a plus de carte il a perdu
 
@@ -20,6 +20,8 @@ const Bataille = () => {
     const allcartes = [...cartes_coeur, ...cartes_carreau, ...cartes_pique, ...cartes_trefle];
 
     //etat du jeu
+    const [inGame, setInGame] = useState<boolean>(false);
+    const [btnBataille, setBtnBataille] = useState<boolean>(true);
     const [mainJoueur, setMainJoueur] = useState<string[]>([]);
     const [mainDealer, setMainDealer] = useState<string[]>([]);
     const [carteJoueur, setCarteJoueur] = useState<string>("");
@@ -28,12 +30,11 @@ const Bataille = () => {
     const [carteVisibleDealer, setCarteVisibleDealer] = useState<string>("");
     const [carteCacheeJoueur, setCarteCacheeJoueur] = useState<string>("");
     const [carteCacheeDealer, setCarteCacheeDealer] = useState<string>("");
-    const [scoreJoueur, setScoreJoueur] = useState<number>(0);
-    const [scoreDealer, setScoreDealer] = useState<number>(0);
     const [bataille, setBataille] = useState<boolean>(false);
     const [gagnant, setGagnant] = useState<string>("");
     const [perdant, setPerdant] = useState<string>("");
     const [fin, setFin] = useState<boolean>(false);
+    const [carteEnJeu, setCarteEnJeu] = useState<string[]>([]); //todo metre les cartes en jeu dans un tableau au cas ou plusieurs batailles s'enchainent
 
     //initialisation du jeu
     const init = () => {
@@ -43,11 +44,45 @@ const Bataille = () => {
         let mainJoueur = allcartes.slice(0, 26);
         let mainDealer = allcartes.slice(26, 52);
         setMainJoueur(mainJoueur);
-        setMainDealer(mainDealer);
-        setScoreJoueur(0);
-        setScoreDealer(0);
+        setMainDealer(mainDealer);;
         setFin(false);
+        setInGame(true);
+        setBtnBataille(true);
     };
+
+    //fonction pour donner un poids a chaque carte
+    const poidsCarte = (carte: string) => {
+        let poids = 0;
+        if (carte.includes("2")) {
+            poids = 2;
+        } else if (carte.includes("3")) {
+            poids = 3;
+        } else if (carte.includes("4")) {
+            poids = 4;
+        } else if (carte.includes("5")) {
+            poids = 5;
+        } else if (carte.includes("6")) {
+            poids = 6;
+        } else if (carte.includes("7")) {
+            poids = 7;
+        } else if (carte.includes("8")) {
+            poids = 8;
+        } else if (carte.includes("9")) {
+            poids = 9;
+        } else if (carte.includes("10")) {
+            poids = 10;
+        } else if (carte.includes("V")) {
+            poids = 11;
+        } else if (carte.includes("D")) {
+            poids = 12;
+        } else if (carte.includes("R")) {
+            poids = 13;
+        } else if (carte.includes("A")) {
+            poids = 14;
+        }
+        return poids 
+    }
+    
 
     //fonction pour jouer une carte
     const jouerCarte = () => {
@@ -59,26 +94,40 @@ const Bataille = () => {
         let carteDealer = mainDealer[0];
         setCarteJoueur(carteJoueur);
         setCarteDealer(carteDealer);
+        let poidsCarteJoueur = poidsCarte(carteJoueur);
+        let poidsCarteDealer = poidsCarte(carteDealer);
         setMainJoueur(mainJoueur.slice(1));
         setMainDealer(mainDealer.slice(1));
-        if (carteJoueur === carteDealer) {
+        console.log(mainJoueur);
+        console.log(mainDealer);
+        if (poidsCarteJoueur === poidsCarteDealer) {
             setBataille(true);
+            setBtnBataille(false);
             setCarteVisibleJoueur(mainJoueur[0]);
             setCarteVisibleDealer(mainDealer[0]);
             setCarteCacheeJoueur(mainJoueur[1]);
             setCarteCacheeDealer(mainDealer[1]);
             setMainJoueur(mainJoueur.slice(2));
             setMainDealer(mainDealer.slice(2));
+            console.log("bataille!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            
         } else if (carteJoueur > carteDealer) {
-            setScoreJoueur(scoreJoueur + 1);
+            let newMainJoueur = [...mainJoueur, carteJoueur, carteDealer];
+            newMainJoueur.shift();
+            setMainJoueur(newMainJoueur);
+            
         } else {
-            setScoreDealer(scoreDealer + 1);
+            let newMainDealer = [...mainDealer, carteDealer, carteJoueur];
+            newMainDealer.shift();
+            setMainDealer(newMainDealer);
+
         }
     };
 
     //fonction pour faire une bataille
     const faireBataille = () => {
         setBataille(false);
+        
         if (mainJoueur.length === 0 || mainDealer.length === 0) {
             setFin(true);
             return;
@@ -87,9 +136,14 @@ const Bataille = () => {
         let carteDealer = mainDealer[0];
         setCarteJoueur(carteJoueur);
         setCarteDealer(carteDealer);
+        let poidsCarteJoueur = poidsCarte(carteJoueur);
+        let poidsCarteDealer = poidsCarte(carteDealer);
         setMainJoueur(mainJoueur.slice(1));
         setMainDealer(mainDealer.slice(1));
-        if (carteJoueur === carteDealer) {
+        let carteEnJeu = [carteJoueur, carteDealer, carteVisibleJoueur, carteVisibleDealer, carteCacheeJoueur, carteCacheeDealer];
+        setCarteEnJeu(carteEnJeu);
+        console.log(carteEnJeu);
+        if (poidsCarteJoueur === poidsCarteDealer) {
             setBataille(true);
             setCarteVisibleJoueur(mainJoueur[0]);
             setCarteVisibleDealer(mainDealer[0]);
@@ -98,35 +152,41 @@ const Bataille = () => {
             setMainJoueur(mainJoueur.slice(2));
             setMainDealer(mainDealer.slice(2));
         } else if (carteJoueur > carteDealer) {
-            setScoreJoueur(scoreJoueur + 1);
+            let newMainJoueur = [...mainJoueur, carteJoueur, carteDealer, carteVisibleJoueur, carteVisibleDealer, carteCacheeJoueur, carteCacheeDealer];
+            newMainJoueur.shift();
+            setMainJoueur(newMainJoueur);
+            console.log(newMainJoueur);
+            setBtnBataille(true);
+            
         } else {
-            setScoreDealer(scoreDealer + 1);
+            let newMainDealer = [...mainDealer, carteDealer, carteJoueur, carteVisibleDealer, carteVisibleJoueur, carteCacheeDealer, carteCacheeJoueur];
+            newMainDealer.shift();
+            setMainDealer(newMainDealer);
+            setMainDealer(newMainDealer);
+            console.log(newMainDealer);
+            setBtnBataille(true);
+            
+            
         }
     };
+    
 
-    //fonction pour terminer la bataille
-    const terminerBataille = () => {
-        setBataille(false);
-        if (carteJoueur > carteDealer) {
-            setScoreJoueur(scoreJoueur + 1);
-        } else {
-            setScoreDealer(scoreDealer + 1);
-        }
-    };
 
     //fonction pour afficher le gagnant
+    
     useEffect(() => {
         if (fin) {
-            if (scoreJoueur > scoreDealer) {
+            setInGame(false);
+            if (mainDealer.length === 0) {
                 setGagnant("Joueur");
                 setPerdant("Dealer");
-            } else {
+            }
+            if (mainJoueur.length === 0) {
                 setGagnant("Dealer");
                 setPerdant("Joueur");
             }
         }
-    }, [fin, scoreJoueur, scoreDealer]);
-
+    }, [mainJoueur, mainDealer, fin]);
 
 
         
@@ -136,38 +196,60 @@ const Bataille = () => {
             <h1 className="text-3xl font-bold mb-5">Jeu de Bataille</h1>
             <button onClick={init} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Nouvelle Partie</button>
             <div className="flex justify-center items-center">
-                <div className="flex flex-col items-center justify-center">
+                <div className="flex flex-col items-center justify-center px-5">
                     <h2 className="text-2xl font-bold">Joueur</h2>
-                    <p>cartes: {mainJoueur}</p>
-                    <p>Score: {scoreJoueur}</p>
-                    <p>Carte: {carteJoueur}</p>
+                    <p>prochaine cartes: {mainJoueur[0]}</p>
+                    <p>Nombre de cartes: {mainJoueur.length}</p>
+                    {inGame && (
+                        <div className="flex flex-col items-center justify-center">
+                            <p>Carte:</p>
+                            <div className="flex flex-col items-center justify-center border-2 border-stone-800 font-bold h-20 w-10 rounded text-center">
+                                <p>{carteJoueur}</p>
+                            </div> 
+                        </div>        
+                    )}
+                    
                     {bataille && (
-                        <div>
-                            <p>Carte Visible: {carteVisibleJoueur}</p>
-                            <p>Carte Cachee: {carteCacheeJoueur}</p>
+                        <div className="flex flex-col items-center justify-center">
+                            <p>Carte Cachee:</p>
+                            <div className="flex flex-col items-center justify-center border-2 border-stone-800 font-bold h-20 w-10 rounded text-center">
+                                <p>?</p>
+                            </div> 
                         </div>
                     )}
+                    
                 </div>
-                <div className="flex flex-col items-center justify-center">
+                <div className="flex flex-col items-center justify-center px-5">
                     <h2 className="text-2xl font-bold">Dealer</h2>
-                    <p>cartes: {mainDealer}</p>
-                    <p>Score: {scoreDealer}</p>
-                    <p>Carte: {carteDealer}</p>
+                    <p>prochaine cartes: ?</p>
+                    <p>Nombre de cartes: {mainDealer.length}</p>
+                    {inGame && (
+                        <div className="flex flex-col items-center justify-center">
+                            <p>Carte:</p>
+                            <div className="flex flex-col items-center justify-center border-2 border-stone-800 font-bold h-20 w-10 rounded text-center">
+                                <p>{carteDealer}</p>
+                            </div> 
+                        </div>        
+                    )} 
                     {bataille && (
-                        <div>
-                            <p>Carte Visible: {carteVisibleDealer}</p>
-                            <p>Carte Cachee: {carteCacheeDealer}</p>
+                        <div className="flex flex-col items-center justify-center">
+                            <p>Carte Cachee:</p>
+                            <div className="flex flex-col items-center justify-center border-2 border-stone-800 font-bold h-20 w-10 rounded text-center">
+                                <p>?</p>
+                            </div> 
                         </div>
                     )}
+                    
+                    
                 </div>
             </div>
-            <button onClick={jouerCarte} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">Bataille</button>
+            {btnBataille && (
+                <button onClick={jouerCarte} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">Bataille</button>
+            )}
             {bataille && (
                 <button onClick={faireBataille} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">Faire Bataille</button>
             )}
-            {bataille && (
-                <button onClick={terminerBataille} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">Terminer Bataille</button>
-            )}
+            
             {fin && (
                 <div>
                     <h2 className="text-2xl font-bold mt-5">Gaganant: {gagnant}</h2>
@@ -179,3 +261,4 @@ const Bataille = () => {
     );
 }
 export default Bataille;
+
