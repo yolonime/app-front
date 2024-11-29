@@ -5,6 +5,9 @@ const Main = () => {
     <div className="flex w-full flex-col justify-center items-center">
       <nav className="w-full flex justify-between list-none p-5">
         <li>
+          <Link to="/bataille">Bataille</Link>
+        </li>
+        <li>
           <Link to="/cat">Cat</Link>
         </li>
         <li>

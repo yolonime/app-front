@@ -16,6 +16,7 @@ import Carte from "./components/Carte";
 import Focus from "./Focus";
 import Storage from "./Storage";
 import Todo from "./Todo";
+import Bataille from "./components/Bataille";
 import InfiniteLoader from "./InfiniteLoader";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Counter2 from "./components/Counter/CounterZustand";
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <Main />,
     children: [
+      {
+        path: "bataille",
+        element: <Bataille />,
+      },
       {
         path: "cat",
         element: <CatList />,
