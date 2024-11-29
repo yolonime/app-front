@@ -36,4 +36,4 @@ npm start
 
 -[first-commit-Poker] : initialisation du projet en clonant le jeux bataille (creation d'une nvl page sur le siteS)
 
--[V1-Poker] : debut du MVP fonctionnel qui comprend le jeu de poker avec les regles de base : -split du paquet de carte mel
+-[V1-Poker] : debut du MVP
