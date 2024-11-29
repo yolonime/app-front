@@ -35,6 +35,8 @@ const Bataille = () => {
     const [perdant, setPerdant] = useState<string>("");
     const [fin, setFin] = useState<boolean>(false);
     const [carteEnJeu, setCarteEnJeu] = useState<string[]>([]); //todo metre les cartes en jeu dans un tableau au cas ou plusieurs batailles s'enchainent
+    const [carteBatailleJoueur, setCarteBatailleJoueur] = useState<string>("");
+    const [carteBatailleDealer, setCarteBatailleDealer] = useState<string>("");
 
     //initialisation du jeu
     const init = () => {
@@ -107,6 +109,8 @@ const Bataille = () => {
             setCarteVisibleDealer(mainDealer[0]);
             setCarteCacheeJoueur(mainJoueur[1]);
             setCarteCacheeDealer(mainDealer[1]);
+            setCarteBatailleJoueur(mainJoueur[2]);
+            setCarteBatailleDealer(mainDealer[2]);
             setMainJoueur(mainJoueur.slice(2));
             setMainDealer(mainDealer.slice(2));
             console.log("bataille!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -127,7 +131,6 @@ const Bataille = () => {
     //fonction pour faire une bataille
     const faireBataille = () => {
         setBataille(false);
-        
         if (mainJoueur.length === 0 || mainDealer.length === 0) {
             setFin(true);
             return;
@@ -192,7 +195,7 @@ const Bataille = () => {
         
         
     return (
-        <div className="flex flex-col items-center justify-center">
+        <div className="w-full h-full flex flex-col items-center justify-center">
             <h1 className="text-3xl font-bold mb-5">Jeu de Bataille</h1>
             <button onClick={init} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Nouvelle Partie</button>
             <div className="flex justify-center items-center">
@@ -217,7 +220,14 @@ const Bataille = () => {
                             </div> 
                         </div>
                     )}
-                    
+                    {bataille && (
+                        <div className="flex flex-col items-center justify-center">
+                            <p>Carte Bataille:</p>
+                            <div className="flex flex-col items-center justify-center border-2 border-stone-800 font-bold h-20 w-10 rounded text-center">
+                                <p>{carteBatailleJoueur}</p>
+                            </div> 
+                        </div>
+                    )}
                 </div>
                 <div className="flex flex-col items-center justify-center px-5">
                     <h2 className="text-2xl font-bold">Dealer</h2>
@@ -239,6 +249,14 @@ const Bataille = () => {
                             </div> 
                         </div>
                     )}
+                    {bataille && (
+                        <div className="flex flex-col items-center justify-center">
+                            <p>Carte Bataille:</p>
+                            <div className="flex flex-col items-center justify-center border-2 border-stone-800 font-bold h-20 w-10 rounded text-center">
+                                <p>{carteBatailleDealer}</p>
+                            </div> 
+                        </div>
+                    )}
                     
                     
                 </div>
@@ -256,6 +274,27 @@ const Bataille = () => {
                     <h2 className="text-2xl font-bold mt-5">Perdant: {perdant}</h2>
                 </div>
             )}
+            <div className="fixed bottom-0 left-0 p-6 bg-gray-100 rounded-t-lg shadow-md w-full sm:w-1/3">
+                <h2 className="text-lg font-semibold text-gray-800 mb-4">Règles du jeu de la bataille</h2>
+                <p className="text-gray-700 mb-2">
+                    Le jeu se joue généralement à deux joueurs. Les 52 cartes sont distribuées équitablement et placées face cachée en piles devant chaque joueur.
+                </p>
+                <p className="text-gray-700 mb-2">
+                    À chaque tour, les joueurs tirent la carte du dessus de leur paquet et la posent face visible sur la table. Celui qui a la carte la plus forte remporte les cartes jouées.
+                </p>
+                <p className="text-gray-700 mb-2">
+                    Les cartes sont classées par valeur : As (le plus fort), Roi, Dame, Valet, 10, etc. Les couleurs n'ont pas d'importance dans ce jeu.
+                </p>
+                <h3 className="text-md font-semibold text-gray-800 mt-4 mb-2">Cas de bataille</h3>
+                <p className="text-gray-700 mb-2">
+                    Si deux cartes de même valeur sont jouées, il y a "bataille". Les joueurs posent alors une carte face cachée sur leur carte précédente, puis une deuxième carte face visible. La valeur de cette dernière carte départage les joueurs. Celui qui a la carte la plus forte remporte toutes les cartes en jeu.
+                </p>
+                <h3 className="text-md font-semibold text-gray-800 mt-4 mb-2">Condition de victoire</h3>
+                <p className="text-gray-700">
+                    Le gagnant est le joueur qui parvient à remporter toutes les cartes du paquet.
+                </p>
+            </div>
+
         </div>
 
     );
