@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Cat List component should display title 1`] = `
+<span>
+  Some Random Cats
+</span>
+`;
+
+exports[`Cat List component should fetch cats when button is clicked 1`] = `
+<body>
+  <div>
+    <div
+      class="cat-list"
+    >
+      <span>
+        Some Random Cats
+      </span>
+      <div>
+        <img
+          alt=""
+          height="200"
+          src="https://cdn2.thecatapi.com/images/1r1.jpg"
+          width="200"
+        />
+      </div>
+      <div>
+        <img
+          alt=""
+          height="200"
+          src="https://cdn2.thecatapi.com/images/6gp.jpg"
+          width="200"
+        />
+      </div>
+      <div>
+        <img
+          alt=""
+          height="200"
+          src="https://cdn2.thecatapi.com/images/a4a.jpg"
+          width="200"
+        />
+      </div>
+      <div>
+        <img
+          alt=""
+          height="200"
+          src="https://cdn2.thecatapi.com/images/bp3.jpg"
+          width="200"
+        />
+      </div>
+      <div>
+        <img
+          alt=""
+          height="200"
+          src="https://cdn2.thecatapi.com/images/bqa.jpg"
+          width="200"
+        />
+      </div>
+      <div>
+        <img
+          alt=""
+          height="200"
+          src="https://cdn2.thecatapi.com/images/drt.jpg"
+          width="200"
+        />
+      </div>
+      <div>
+        <img
+          alt=""
+          height="200"
+          src="https://cdn2.thecatapi.com/images/dvt.jpg"
+          width="200"
+        />
+      </div>
+      <div>
+        <img
+          alt=""
+          height="200"
+          src="https://cdn2.thecatapi.com/images/MTUxMDkwNw.jpg"
+          width="200"
+        />
+      </div>
+      <div>
+        <img
+          alt=""
+          height="200"
+          src="https://cdn2.thecatapi.com/images/MTY0NTY3Mw.jpg"
+          width="200"
+        />
+      </div>
+      <div>
+        <img
+          alt=""
+          height="200"
+          src="https://cdn2.thecatapi.com/images/MTk0MTcyOQ.jpg"
+          width="200"
+        />
+      </div>
+    </div>
+  </div>
+</body>
+`;
